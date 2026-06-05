@@ -4,7 +4,7 @@
 
 body {
   margin: 0;
-  background: #ea8351;
+  background: linear-gradient(to bottom, #dfa78b, #d56025);
   color: #222;
   font-family: "Helvetica Neue", Arial, sans-serif;
 }
@@ -45,7 +45,7 @@ h2 {
   color: #7bbffc;
 }
 
-.content > p {
+.content p {
   margin: 0;
   color: #ffffff;
   font-size: 0.9rem;
@@ -60,16 +60,17 @@ h2 {
   object-fit: cover;
   display: block;
   border-radius: 16px;
+  filter: blur(2px);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
   transition:
-    filter 0.4s ease,
+    filter 0.2s ease,
     transform 0.4s ease,
     box-shadow 0.4s ease;
 }
 
 .sidebar-img:hover {
   filter: grayscale(0%);
-  transform: translateY(-4px);
+  transform: translateY(-0px) scale(1.05);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
 }
 #interests {
@@ -83,7 +84,7 @@ h2 {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  color: #000000;
+  color: #7bbffc;
 }
 
 #interests ul {
@@ -96,7 +97,7 @@ h2 {
 }
 
 #interests li {
-  color: #000000;
+  color: #7bbffc;
   font-size: 1rem;
   font-weight: 600;
   padding: 10px 20px;
@@ -111,9 +112,9 @@ h2 {
 }
 
 #interests li:hover {
-  background: #000;
+  background: #7bbffc;
   color: #fff;
-  border-color: #000;
+  border-color: #7bbffc;
   transform: scale(1.1);
 }
 nav {
@@ -157,8 +158,8 @@ nav h1 {
 }
 
 .nav-li a:hover {
-  background: #000;
-  color: #fff;
+  background:
+  color #fff;
 }
 nav {
   background: #1a1a2e;
@@ -175,12 +176,16 @@ nav h1 {
 
 .nav-li a:hover {
   background: #e94560;
-  color: #fff;
+  color: #7bbffc;
 }
 
 /* Portfolio styles */
 .content h1 {
-  color: black;
+  color: #f8f8f8;
+}
+
+.content h3 {
+  color: #f8f8f8;
 }
 
 #portfolio {
@@ -193,6 +198,20 @@ nav h1 {
   gap: 15px;
 }
 
+#imgport {
+  width: 100%;
+  max-width: 730px;
+  aspect-ratio: 5 / 8;
+  object-fit: cover;
+  display: block;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  transition:
+    filter 0.4s ease,
+    transform 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
 #portfolio li {
   border-radius: 12px;
 }
@@ -202,7 +221,7 @@ nav h1 {
   justify-content: space-between;
   align-items: center;
   text-decoration: none;
-  color: #444;
+  color: #7bbffc;
   padding: 16px 20px;
   font-size: 1.1rem;
   font-weight: 500;
@@ -216,7 +235,7 @@ nav h1 {
 }
 
 #portfolio a:hover {
-  background: #000;
+  background: #7bbffc;
   color: #fff;
   transform: scale(1.05);
 }
