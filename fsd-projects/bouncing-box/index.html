@@ -20,7 +20,7 @@
         border-radius: 15%;
       }
 
-      /* Add this anywhere inside your <style> tags */
+      /* css for the box trail */
       .box-echo {
         width: 70px;
         height: 70px;
@@ -59,132 +59,132 @@
   <body class="board">
     <div class="box">?</div>
     <div id="scount">Speed: 0</div>
-    <div id="misclick-count">Misclicks: 0 / 50</div>
+    <div id="misclick-count">Misclicks: 0 / 100</div>
   
     <script>
-      (function () {
-        "use strict";
+  (function () {
+    "use strict";
+  
+    var box = jQuery(".box"); 
+    var board = jQuery(".board"); 
+    var boardWidth = board.width(); 
+
+    jQuery(window).on("resize", function () {
+      boardWidth = board.width();
+      boardHeight = jQuery(window).height(); 
+    });
+
+    var scount = jQuery("#scount");
+    var misclickDisplay = jQuery("#misclick-count");
+
+    var gameInterval = setInterval(update, 15);
+
+    box.on("click", handleBoxClick);
+    board.on("click", handleBoardClick);
+
+    // vars
+    var positionX = 0;
+    var positionY = 0;
+    var points = 0;
+    var baseSpeed = 3;
+    var directionX = 1;
+    var directionY = 1;
+    var speedY_multiplier = Math.random() * 3; // y angle at random
+    var boardHeight = jQuery(window).height();
+    var misclicks = 0;
+    var isGameOver = false;
+
+    function moveBoxTo(newPositionX, newPositionY) {
+      box.css("left", newPositionX);
+      box.css("top", newPositionY);
+    }
+
+    function changeBoxText(newText) {
+      box.text(newText);
+    }
+
+    function update() {
+     
+      var currentSpeedX = baseSpeed * directionX;
+      var currentSpeedY = baseSpeed * speedY_multiplier * directionY;
+
+      moveBoxTo(positionX, positionY);
+      positionX += currentSpeedX;
+      positionY += currentSpeedY;
+
       
-        var box = jQuery(".box"); 
-        var board = jQuery(".board"); 
-        var boardWidth = board.width(); 
-
-        jQuery(window).on("resize", function () {
-          boardWidth = board.width();
-        });
-
-        var scount = jQuery("#scount");
-        var misclickDisplay = jQuery("#misclick-count");
-
-       
-        var gameInterval = setInterval(update, 20);
-
-        box.on("click", handleBoxClick);
-        
-        // clicks for bg
-        board.on("click", handleBoardClick);
-
-        // vars
-        var positionX = 0;
-        var points = 0;
-        var speed = 3;
-        var positionY = 0;
-        var speedY = Math.random() * 3;
-        var boardHeight = jQuery(window).height();
-        
-        // keeps track of mc
-        var misclicks = 0;
-        var isGameOver = false;
-
-        function moveBoxTo(newPositionX, newPositionY) {
-          box.css("left", newPositionX);
-          box.css("top", newPositionY);
-        }
-
-        function changeBoxText(newText) {
-          box.text(newText);
-        }
-
-        function update() {
-          moveBoxTo(positionX, positionY);
-          positionX += speed;
-          positionY += speedY;
-
-          var echo = jQuery("<div></div>")
+      var echo = jQuery("<div></div>")
         .addClass("box-echo")
         .css({
-         left: positionX + "px",
-         top: positionY + "px"
-          });
-
-          board.append(echo);
-
-          setTimeout(function () {
-          echo.css({
-          opacity: 0,
-         transform: "scale(0.5)"
+          left: positionX + "px",
+          top: positionY + "px"
         });
-       }, 10);
 
-          if (positionX > boardWidth) {
-            speed *= -1;
-          }
-          else if (positionX < 0){
-            speed *= -1;
-          }
-          
+      board.append(echo);
 
-          if (positionY > boardHeight) {
-            speedY *= -1;
-          }
-          else if (positionY < 0){
-            speedY *= -1;
-          }
+      
+      setTimeout(function () {
+        echo.css({
+          opacity: 0,
+          transform: "scale(0.5)"
+        });
+        setTimeout(function() {
+          echo.remove(); 
+        }, 200);
+      }, 10);
 
-          var currentSpeed = Math.abs(speed);
-          scount.text("Speed: " + currentSpeed);
+       
+      if (positionX > (boardWidth - 70)) { 
+        directionX = -1;
+      }
+      else if (positionX < 0){
+        directionX = 1;
+      }
+      
+      if (positionY > (boardHeight - 70)) { 
+        directionY = -1;
+      }
+      else if (positionY < 0){
+        directionY = 1;
+      }
 
-          var currentSpeed = Math.abs(speed);
-          scount.text("Speed: " + currentSpeed.toFixed(1)); /* rounds the scount*/
-        }
+      // to display the speed count on the screen
+      scount.text("Speed: " + baseSpeed.toFixed(1)); 
+    }
 
-        function handleBoardClick() {
+    function handleBoardClick() {
+      if (isGameOver) return;
 
+      misclicks += 1;
+      misclickDisplay.text("Misclicks: " + misclicks + " / 100");
 
-          if (isGameOver) return;
+      if (misclicks >= 100) {
+        endGame();
+      }
+    }
 
-          misclicks += 1;
-          misclickDisplay.text("Misclicks: " + misclicks + " / 50");
+    function handleBoxClick(event) {
+      if (isGameOver) return;
 
-          if (misclicks >= 50) {
-            endGame();
-          }
+      event.stopPropagation();
 
-          
-        }
+      points += 1;
+      // base speed increases exactly by .3
+      baseSpeed += 0.3; 
+      
+      changeBoxText(points);
+    }
 
-        function handleBoxClick(event) {
-          if (isGameOver) return;
-
-          event.stopPropagation();
-
-          /*var randNum = Math.random() * boardWidth;*/
-          points += 1;
-          speed += .3 * points + 1;
-          changeBoxText(points);
-        }
-
-
-        function endGame() {
-          isGameOver = true;
-          clearInterval(gameInterval);
-          box.off("click");
-          board.off("click");
-          
-          changeBoxText("X_X");
-          alert("Game Over! You misclicked 50 times. Total Score: " + points);
-        }
-      })();
-    </script>
+    function endGame() {
+      isGameOver = true;
+      clearInterval(gameInterval);
+      box.off("click");
+      board.off("click");
+      
+      changeBoxText("X_X");
+      alert("Game Over! You misclicked 100 times. Total Score: " + points);
+    }
+  })();
+</script>
   </body>
 </html>
