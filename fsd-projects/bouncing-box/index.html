@@ -6,12 +6,13 @@
     <script src="jquery.min.js"></script>
     <style>
       .box {
-        width: 70px;
-        height: 70px;
+        width: 100px;
+        height: 100px;
         background-color: #d56025;
         font-size: 300%;
         font-family:'Courier New', Courier, monospace;
         text-align: center;
+        line-height: 100px;
         user-select: none;
         display: block;
         position: absolute;
@@ -22,8 +23,8 @@
 
       /* css for the box trail */
       .box-echo {
-        width: 70px;
-        height: 70px;
+        width: 100px;
+        height: 100px;
         background-color: #d56025;
         position: absolute;
         border-radius: 15%;
@@ -134,14 +135,14 @@
       }, 10);
 
        
-      if (positionX > (boardWidth - 70)) { 
+      if (positionX > (boardWidth - 100)) { 
         directionX = -1;
       }
       else if (positionX < 0){
         directionX = 1;
       }
       
-      if (positionY > (boardHeight - 70)) { 
+      if (positionY > (boardHeight - 100)) { 
         directionY = -1;
       }
       else if (positionY < 0){
@@ -153,6 +154,8 @@
     }
 
     function handleBoardClick() {
+
+      
       if (isGameOver) return;
 
       misclicks += 1;
